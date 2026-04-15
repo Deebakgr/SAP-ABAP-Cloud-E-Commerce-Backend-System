@@ -1,0 +1,79 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { 
+    typeName: 'User',
+    typeNamePlural: 'Users',
+    title: { type: #STANDARD, value: 'Username' },
+    description: { type: #STANDARD, value: 'Email' } 
+  }
+}
+annotate view ZC_ECOM_USERS with
+{
+  @UI.facet: [ 
+    { id: 'PersonalInfo', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Personal Information', position: 10 },
+    { id: 'ContactInfo', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE, targetQualifier: 'ContactGrp', label: 'Contact Details', position: 20 },
+    { id: 'LocationInfo', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE, targetQualifier: 'LocationGrp', label: 'Location Details', position: 30 }
+  ]
+
+  @EndUserText.label: 'User ID'
+  @UI.selectionField: [{ position: 10 }]
+  @UI.lineItem: [{ position: 10 }]
+  @UI.identification: [{ position: 10 }]
+  UserId;
+
+  @EndUserText.label: 'Username'
+  @UI.selectionField: [{ position: 20 }]
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 20 }]
+  Username;
+
+  @EndUserText.label: 'Email Address'
+  @UI.selectionField: [{ position: 30 }]
+  @UI.lineItem: [{ position: 30 }]
+  @UI.fieldGroup: [{ qualifier: 'ContactGrp', position: 10 }]
+  Email;
+
+  @EndUserText.label: 'Phone Number'
+  @UI.fieldGroup: [{ qualifier: 'ContactGrp', position: 20 }]
+  Phone;
+
+  @EndUserText.label: 'User Segment'
+  @UI.lineItem: [{ position: 40, criticality: 'SegmentCriticality' }]
+  @UI.identification: [{ position: 30, criticality: 'SegmentCriticality' }]
+  Segment;
+
+  @EndUserText.label: 'Country'
+  @UI.selectionField: [{ position: 40 }]
+  @UI.lineItem: [{ position: 50 }]
+  @UI.fieldGroup: [{ qualifier: 'LocationGrp', position: 10 }]
+  Country;
+
+  @EndUserText.label: 'City'
+  @UI.fieldGroup: [{ qualifier: 'LocationGrp', position: 20 }]
+  City;
+
+  @EndUserText.label: 'Date of Birth'
+  @UI.identification: [{ position: 40 }]
+  DateOfBirth;
+
+  @EndUserText.label: 'Gender'
+  @UI.identification: [{ position: 50 }]
+  Gender;
+
+  @EndUserText.label: 'Active Status'
+  @UI.lineItem: [
+    { position: 60 },
+    { type: #FOR_ACTION, dataAction: 'reactivateUser', label: 'Reactivate', position: 10 },
+    { type: #FOR_ACTION, dataAction: 'suspendUser', label: 'Suspend', position: 20 }
+  ]
+  @UI.identification: [{ position: 60 }]
+  IsActive;
+  
+  @UI.hidden: true
+  SegmentCriticality;
+
+  @UI.hidden: true
+  CreatedAt;
+  @UI.hidden: true
+  ChangedAt;
+}

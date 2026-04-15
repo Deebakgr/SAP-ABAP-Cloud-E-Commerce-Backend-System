@@ -1,0 +1,55 @@
+managed implementation in class zbp_i_ecom_product unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_ECOM_PRODUCT alias Product
+persistent table zecom_products  // Saves data here automatically
+draft table zecom_prd_d
+lock master
+total etag ChangedAt
+authorization master ( instance )
+etag master ChangedAt
+ early numbering               // Uncomment if you want auto-generated IDs
+{
+  create;
+  update;
+  delete;
+
+  // --- ADVANCED FEATURE 1: Field Controls ---
+  field ( readonly ) ProductId, IsActive, CreatedBy, CreatedAt, ChangedBy, ChangedAt;
+  field ( mandatory ) ProductName, Price, Currency, Category;
+
+  // --- ADVANCED FEATURE 2: Determinations ---
+  determination setInitialValues on modify { create; }
+
+  // --- ADVANCED FEATURE 3: Validations ---
+  validation validatePrice on save { field Price; create; update; }
+  validation validateStock on save { field StockQty; create; update; }
+
+  // --- ADVANCED FEATURE 4: Actions & Feature Control ---
+  action ( features : instance ) activateProduct result [1] $self;
+  action ( features : instance ) deactivateProduct result [1] $self;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare { validation validatePrice; validation validateStock; }
+
+  mapping for zecom_products
+  {
+    ProductId   = product_id;
+    ProductName = product_name;
+    Category    = category;
+    Brand       = brand;
+    Price       = price;
+    Currency    = currency;
+    StockQty    = stock_qty;
+    Rating      = rating;
+    IsActive    = is_active;
+    CreatedBy   = created_by;
+    CreatedAt   = created_at;
+    ChangedBy   = changed_by;
+    ChangedAt   = changed_at;
+  }
+}

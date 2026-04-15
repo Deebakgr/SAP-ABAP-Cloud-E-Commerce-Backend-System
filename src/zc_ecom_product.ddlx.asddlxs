@@ -1,0 +1,76 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { 
+    typeName: 'Product',
+    typeNamePlural: 'Products',
+    title: { type: #STANDARD, value: 'ProductName' },
+    description: { type: #STANDARD, value: 'Brand' } 
+  }
+}
+annotate view ZC_ECOM_PRODUCT with
+{
+  @UI.facet: [ 
+    { id: 'ProductInfo', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Product Details', position: 10 },
+    { id: 'Inventory', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE, targetQualifier: 'InvGrp', label: 'Inventory & Pricing', position: 20 }
+  ]
+
+  @EndUserText.label: 'Product ID'
+  @UI.selectionField: [{ position: 10 }]
+  @UI.lineItem: [{ position: 10 }]
+  @UI.identification: [{ position: 10 }]
+  ProductId;
+
+  @EndUserText.label: 'Product Name'
+  @UI.selectionField: [{ position: 20 }]
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 20 }]
+  ProductName;
+
+  @EndUserText.label: 'Category'
+  @UI.selectionField: [{ position: 30 }]
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  Category;
+
+  @EndUserText.label: 'Brand'
+  @UI.lineItem: [{ position: 40 }]
+  @UI.identification: [{ position: 40 }]
+  Brand;
+
+  @EndUserText.label: 'Price'
+  @UI.lineItem: [{ position: 50 }]
+  @UI.fieldGroup: [{ qualifier: 'InvGrp', position: 10 }]
+  Price;
+
+  @UI.hidden: true
+  Currency;
+
+  @EndUserText.label: 'Stock Quantity'
+  @UI.lineItem: [{ position: 60 }]
+  @UI.fieldGroup: [{ qualifier: 'InvGrp', position: 20 }]
+  StockQty;
+
+  @EndUserText.label: 'Rating'
+  @UI.fieldGroup: [{ qualifier: 'InvGrp', position: 30 }]
+  @UI.lineItem: [{ position: 55, label: 'Rating' }]
+  Rating;
+
+  @EndUserText.label: 'Active Status'
+  @UI.selectionField: [{ position: 40 }]
+  @UI.lineItem: [
+    { position: 70 },
+    { type: #FOR_ACTION, dataAction: 'activateProduct', label: 'Activate', position: 10 },
+    { type: #FOR_ACTION, dataAction: 'deactivateProduct', label: 'Deactivate', position: 20 }
+  ]
+  @UI.fieldGroup: [{ qualifier: 'InvGrp', position: 40 }]
+  IsActive;
+
+  @UI.hidden: true
+  CreatedBy;
+  @UI.hidden: true
+  CreatedAt;
+  @UI.hidden: true
+  ChangedBy;
+  @UI.hidden: true
+  ChangedAt;
+}

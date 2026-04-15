@@ -1,0 +1,64 @@
+managed implementation in class zbp_i_ecom_orders unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_ECOM_ORDERS alias Orders
+persistent table zecom_orders
+draft table zecom_ord_d
+lock master
+total etag ChangedAt
+authorization master ( instance )
+etag master ChangedAt
+early numbering
+{
+  create;
+  update;
+  delete;
+
+  // --- ADVANCED FEATURE 1: Field Controls ---
+  // Make these fields read-only so users can't manually type them in Fiori
+  field ( readonly ) OrderId, OrderDate, TotalPrice, Status, CreatedBy, ChangedAt;
+  field ( mandatory ) ProductId, Quantity; // Force user to enter these
+
+  // --- ADVANCED FEATURE 2: Determinations ---
+  determination setInitialValues on modify { create; }
+  determination calculateTotalPrice on modify { field Quantity, UnitPrice, DiscountPct; }
+
+  // --- ADVANCED FEATURE 3: Validations ---
+  validation validateQuantity on save { field Quantity; create; update; }
+
+  // --- ADVANCED FEATURE 4: Actions & Feature Control ---
+  // Action to cancel an order, controlled dynamically (enabled/disabled)
+  action ( features : instance ) cancelOrder result [1] $self;
+  // Add the new status buttons here:
+  action ( features : instance ) confirmOrder result [1] $self;
+  action ( features : instance ) shipOrder result [1] $self;
+  action ( features : instance ) setPending result [1] $self;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare { validation validateQuantity; }
+
+  mapping for zecom_orders
+  {
+    OrderId       = order_id;
+    UserId        = user_id;
+    ProductId     = product_id;
+    Quantity      = quantity;
+    UnitPrice     = unit_price;
+    TotalPrice    = total_price;
+    Currency      = currency;
+    DiscountPct   = discount_pct;
+    Status        = status;
+    PaymentMethod = payment_method;
+    DeliveryAddr  = delivery_addr;
+    OrderDate     = order_date;
+    OrderTime     = order_time;
+    ShippedDate   = shipped_date;
+    DeliveredDate = delivered_date;
+    CreatedBy     = created_by;
+    ChangedAt     = changed_at;
+  }
+}

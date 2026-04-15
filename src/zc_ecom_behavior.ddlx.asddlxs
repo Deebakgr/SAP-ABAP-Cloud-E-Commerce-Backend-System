@@ -1,0 +1,84 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { 
+    typeName: 'Behavior Event',
+    typeNamePlural: 'Behavior Events',
+    title: { type: #STANDARD, value: 'EventType' },
+    description: { type: #STANDARD, value: 'DeviceType' }
+  }
+}
+annotate view ZC_ECOM_BEHAVIOR with
+{
+  @UI.facet: [ 
+    { id: 'EventData', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Event Details', position: 10 },
+    { id: 'ContextData', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE, targetQualifier: 'ContextGrp', label: 'Context & Technology', position: 20 }
+  ]
+
+  @EndUserText.label: 'Event ID'
+  @UI.selectionField: [{ position: 10 }]
+  @UI.lineItem: [{ position: 10 }]
+  @UI.identification: [{ position: 10 }]
+  EventId;
+
+  @EndUserText.label: 'User ID'
+  @UI.selectionField: [{ position: 20 }]
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 20 }]
+  UserId;
+
+  @EndUserText.label: 'Product ID'
+  @UI.selectionField: [{ position: 30 }]
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  ProductId;
+
+  @EndUserText.label: 'Event Type'
+  @UI.selectionField: [{ position: 40 }]
+  
+  @UI.lineItem: [
+    { position: 40, criticality: 'EventCriticality' },
+    { type: #FOR_ACTION, dataAction: 'setView', label: 'Set to View', position: 10 },
+    { type: #FOR_ACTION, dataAction: 'setAddToCart', label: 'Set to Cart', position: 20 },
+    { type: #FOR_ACTION, dataAction: 'setPurchase', label: 'Set to Purchase', position: 30 }
+  ]
+  
+  @UI.identification: [
+    { position: 40 },  // No criticality here so you can still type manually!
+    { type: #FOR_ACTION, dataAction: 'setView', label: 'Set to View', position: 10 },
+    { type: #FOR_ACTION, dataAction: 'setAddToCart', label: 'Set to Cart', position: 20 },
+    { type: #FOR_ACTION, dataAction: 'setPurchase', label: 'Set to Purchase', position: 30 }
+  ]
+  EventType;
+
+  @EndUserText.label: 'Event Score (Points)'
+  @UI.lineItem: [{ position: 50 }]
+  @UI.identification: [{ position: 50 }]
+  EventScore;
+
+  @EndUserText.label: 'Web Session ID'
+  @UI.fieldGroup: [{ qualifier: 'ContextGrp', position: 10 }]
+  SessionId;
+
+  @EndUserText.label: 'Device Type (Mobile/Desktop)'
+  @UI.fieldGroup: [{ qualifier: 'ContextGrp', position: 20 }]
+  DeviceType;
+
+  @EndUserText.label: 'Search Keyword'
+  @UI.fieldGroup: [{ qualifier: 'ContextGrp', position: 30 }]
+  SearchKeyword;
+
+  @EndUserText.label: 'Event Date'
+  @UI.lineItem: [{ position: 60 }]
+  @UI.identification: [{ position: 60 }]
+  EventDate;
+
+  @EndUserText.label: 'Event Time'
+  @UI.identification: [{ position: 70 }]
+  EventTime;
+
+  @UI.hidden: true
+  EventTs;
+  
+  @UI.hidden: true
+  EventCriticality;
+}

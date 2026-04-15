@@ -1,0 +1,53 @@
+managed implementation in class zbp_i_ecom_users unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_ECOM_USERS alias Users
+persistent table zecom_users     // Saves data here automatically
+draft table zecom_usr_d
+lock master
+total etag ChangedAt
+authorization master ( instance )
+etag master ChangedAt
+ early numbering
+{
+  create;
+  update;
+  delete;
+ field ( readonly ) UserId, CreatedAt, ChangedAt, IsActive;
+  field ( mandatory ) Username, Email, DateOfBirth;
+
+  // Determinations
+  determination setInitialValues on modify { create; }
+  determination setSegment on modify { create; }
+
+  // Validations
+  validation validateEmail on save { field Email; create; update; }
+  validation validateAge on save { field DateOfBirth; create; update; }
+
+  // Actions
+  action ( features : instance ) suspendUser result [1] $self;
+  action ( features : instance ) reactivateUser result [1] $self;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare  { validation validateEmail; validation validateAge; }
+
+  mapping for zecom_users
+  {
+    UserId = user_id;
+    Username = username;
+    Email = email;
+    Phone = phone;
+    Segment = segment;
+    Country = country;
+    City = city;
+    DateOfBirth = date_of_birth;
+    Gender = gender;
+    IsActive = is_active;
+    CreatedAt = created_at;
+    ChangedAt = changed_at;
+  }
+}

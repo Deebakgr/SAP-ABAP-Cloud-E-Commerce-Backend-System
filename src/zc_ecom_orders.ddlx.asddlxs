@@ -1,0 +1,106 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { 
+    typeName: 'Order',
+    typeNamePlural: 'Orders',
+    title: { type: #STANDARD, value: 'OrderId' },       
+    description: { type: #STANDARD, value: 'Status' }   
+  }
+}
+annotate view ZC_ECOM_ORDERS with
+{
+  @UI.facet: [ 
+    { id: 'General', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'General Information', position: 10 },
+    { id: 'Pricing', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE, targetQualifier: 'PricingGrp', label: 'Pricing Details', position: 20 },
+    { id: 'Shipping', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE, targetQualifier: 'ShippingGrp', label: 'Shipping Details', position: 30 }
+  ]
+
+  @EndUserText.label: 'Order ID'
+  @UI.selectionField: [{ position: 10 }]
+  @UI.lineItem: [{ position: 10 }]
+  @UI.identification: [{ position: 10 }]
+  OrderId;
+
+  @EndUserText.label: 'User ID'
+  @UI.selectionField: [{ position: 20 }]
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 20 }]
+  UserId;
+
+  @EndUserText.label: 'Product ID'
+  @UI.selectionField: [{ position: 30 }]
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  ProductId;
+
+  @EndUserText.label: 'Quantity'
+  @UI.lineItem: [{ position: 40 }]
+  @UI.fieldGroup: [{ qualifier: 'PricingGrp', position: 10 }]
+  Quantity;
+
+  @EndUserText.label: 'Unit Price'
+  @UI.fieldGroup: [{ qualifier: 'PricingGrp', position: 20 }]
+  UnitPrice;
+
+  @EndUserText.label: 'Total Price'
+  @UI.lineItem: [{ position: 50 }]
+  @UI.fieldGroup: [{ qualifier: 'PricingGrp', position: 30 }]
+  TotalPrice;
+
+  @UI.hidden: true
+  Currency;
+
+  @EndUserText.label: 'Discount (%)'
+  @UI.fieldGroup: [{ qualifier: 'PricingGrp', position: 40 }]
+  DiscountPct;
+
+  @EndUserText.label: 'Order Status'
+  @UI.selectionField: [{ position: 40 }]
+  
+  @UI.lineItem: [
+    { position: 60, criticality: 'StatusCriticality' },
+    { type: #FOR_ACTION, dataAction: 'confirmOrder', label: 'Confirm Order', position: 10 },
+    { type: #FOR_ACTION, dataAction: 'shipOrder', label: 'Ship Order', position: 20 },
+    { type: #FOR_ACTION, dataAction: 'setPending', label: 'Set Pending', position: 30 },
+    { type: #FOR_ACTION, dataAction: 'cancelOrder', label: 'Cancel Order', position: 40 }
+  ]
+  
+  @UI.identification: [
+    { position: 40, criticality: 'StatusCriticality' },
+    { type: #FOR_ACTION, dataAction: 'confirmOrder', label: 'Confirm Order', position: 10 },
+    { type: #FOR_ACTION, dataAction: 'shipOrder', label: 'Ship Order', position: 20 },
+    { type: #FOR_ACTION, dataAction: 'setPending', label: 'Set Pending', position: 30 },
+    { type: #FOR_ACTION, dataAction: 'cancelOrder', label: 'Cancel Order', position: 40 }
+  ]
+  Status;
+
+  @EndUserText.label: 'Payment Method'
+  @UI.fieldGroup: [{ qualifier: 'ShippingGrp', position: 10 }]
+  PaymentMethod;
+
+  @EndUserText.label: 'Delivery Address'
+  @UI.fieldGroup: [{ qualifier: 'ShippingGrp', position: 20 }]
+  DeliveryAddr;
+
+  @EndUserText.label: 'Order Date'
+  @UI.identification: [{ position: 50 }]
+  OrderDate;
+
+  @EndUserText.label: 'Shipped Date'
+  @UI.fieldGroup: [{ qualifier: 'ShippingGrp', position: 30 }]
+  ShippedDate;
+
+  @EndUserText.label: 'Delivered Date'
+  @UI.fieldGroup: [{ qualifier: 'ShippingGrp', position: 40 }]
+  DeliveredDate;
+  
+  @UI.hidden: true
+  StatusCriticality;
+
+  @UI.hidden: true
+  OrderTime;
+  @UI.hidden: true
+  CreatedBy;
+  @UI.hidden: true
+  ChangedAt;
+}

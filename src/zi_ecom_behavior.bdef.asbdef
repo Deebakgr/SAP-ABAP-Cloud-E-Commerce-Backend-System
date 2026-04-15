@@ -1,0 +1,104 @@
+//managed implementation in class zbp_i_ecom_behavior unique;
+//strict ( 2 );
+//with draft;
+//
+//define behavior for ZI_ECOM_BEHAVIOR alias Behavior
+//persistent table zecom_behavior
+//draft table zecom_beh_d
+//lock master
+//total etag EventTs
+//authorization master ( instance )
+//etag master EventTs
+//early numbering
+//{
+//  create;
+//  update;
+//  delete;
+//
+//  field ( readonly ) EventId, EventDate, EventTime, EventScore, EventTs;
+//  field ( mandatory ) EventType;
+//
+//  determination setInitialValues on modify { create; }
+//  determination calculateScore on modify { field EventType; }
+//
+//  validation validateEventType on save { field EventType; create; update; }
+//
+//  draft action Edit;
+//  draft action Activate optimized;
+//  draft action Discard;
+//  draft action Resume;
+//  draft determine action Prepare { validation validateEventType; }
+//
+//  mapping for zecom_behavior
+//  {
+//    EventId = event_id;
+//    UserId = user_id;
+//    ProductId = product_id;
+//    EventType = event_type;
+//    EventScore = event_score;
+//    SessionId = session_id;
+//    DeviceType = device_type;
+//    SearchKeyword = search_keyword;
+//    EventDate = event_date;
+//    EventTime = event_time;
+//    EventTs = event_ts;
+//  }
+//}
+
+managed implementation in class zbp_i_ecom_behavior unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_ECOM_BEHAVIOR alias Behavior
+persistent table zecom_behavior
+draft table zecom_beh_d
+lock master
+total etag EventTs
+authorization master ( instance )
+etag master EventTs
+early numbering
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly ) EventId, EventDate, EventTime, EventScore, EventTs;
+  field ( mandatory ) EventType;
+
+  determination setInitialValues on modify { create; }
+  determination calculateScore on modify { field EventType; }
+
+  // --- RECTIFICATION: Add this line back ---
+  validation validateEventType on save { field EventType; create; update; }
+  validation validateProductContext on save { field EventType, ProductId; create; update; }
+
+  action ( features : instance ) setView result [1] $self;
+  action ( features : instance ) setAddToCart result [1] $self;
+  action ( features : instance ) setPurchase result [1] $self;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+
+  // --- RECTIFICATION: Add it here too so it checks before saving ---
+  draft determine action Prepare {
+    validation validateEventType;
+    validation validateProductContext;
+  }
+
+  mapping for zecom_behavior
+  {
+    EventId = event_id;
+    UserId = user_id;
+    ProductId = product_id;
+    EventType = event_type;
+    EventScore = event_score;
+    SessionId = session_id;
+    DeviceType = device_type;
+    SearchKeyword = search_keyword;
+    EventDate = event_date;
+    EventTime = event_time;
+    EventTs = event_ts;
+  }
+}

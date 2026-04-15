@@ -1,0 +1,5 @@
+CLASS zbp_i_ecom_behavior DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_ecom_behavior.
+ENDCLASS.
+
+CLASS zbp_i_ecom_behavior IMPLEMENTATION.
+ENDCLASS.

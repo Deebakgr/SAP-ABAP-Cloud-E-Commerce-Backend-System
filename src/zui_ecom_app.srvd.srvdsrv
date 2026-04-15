@@ -1,0 +1,7 @@
+@EndUserText.label: 'Service Definition for E-Commerce App'
+define service ZUI_ECOM_APP {
+  expose ZC_ECOM_ORDERS   as Orders;
+  expose ZC_ECOM_PRODUCT  as Products;
+  expose ZC_ECOM_USERS    as Users;
+  expose ZC_ECOM_BEHAVIOR as BehaviorLog;
+}
